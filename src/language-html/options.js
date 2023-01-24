@@ -28,6 +28,7 @@ module.exports = {
       },
     ],
   },
+  ignores: commonOptions.ignores,
   singleAttributePerLine: commonOptions.singleAttributePerLine,
   vueIndentScriptAndStyle: {
     since: "1.19.0",

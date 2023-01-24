@@ -6,6 +6,7 @@ const CATEGORY_JAVASCRIPT = "JavaScript";
 
 // format based on https://github.com/prettier/prettier/blob/main/src/main/core-options.js
 module.exports = {
+  ignores: commonOptions.ignores,
   arrowParens: {
     since: "1.9.0",
     category: CATEGORY_JAVASCRIPT,

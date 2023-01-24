@@ -320,6 +320,8 @@ async function formatFiles(context) {
     }
   }
 
+  let addedIgnores = false;
+
   for await (const pathOrError of expandPatterns(context)) {
     if (typeof pathOrError === "object") {
       context.logger.error(pathOrError.error);
@@ -335,6 +337,18 @@ async function formatFiles(context) {
       ? path.relative(path.dirname(context.argv.ignorePath), filename)
       : filename;
 
+    const options = {
+      ...(await getOptionsForFile(context, filename)),
+      filepath: filename,
+    };
+
+    // Currently, we can only get options for each individual file, however
+    // we assume that all files are using the same top-level configuration.
+    if (!addedIgnores && options.ignores) {
+      ignorer.add(options.ignores);
+      addedIgnores = true;
+    }
+
     const fileIgnored = ignorer.ignores(fixWindowsSlashes(ignoreFilename));
     if (
       fileIgnored &&
@@ -345,11 +359,6 @@ async function formatFiles(context) {
     ) {
       continue;
     }
-
-    const options = {
-      ...(await getOptionsForFile(context, filename)),
-      filepath: filename,
-    };
 
     let printedFilename;
     if (isTTY()) {

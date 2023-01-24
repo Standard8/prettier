@@ -1,9 +1,24 @@
 "use strict";
 
+const { outdent } = require("outdent");
+
 const CATEGORY_COMMON = "Common";
 
 // format based on https://github.com/prettier/prettier/blob/main/src/main/core-options.js
 module.exports = {
+  ignores: {
+    since: "2.9.0",
+    type: "path",
+    array: true,
+    default: [{ value: [] }],
+    category: CATEGORY_COMMON,
+    description: outdent`
+      Specify the patterns of files to ignore, in addition to those in the
+      configuration.
+    `,
+    exception: (value) =>
+      typeof value === "string" || typeof value === "object",
+  },
   bracketSpacing: {
     since: "0.0.0",
     category: CATEGORY_COMMON,
